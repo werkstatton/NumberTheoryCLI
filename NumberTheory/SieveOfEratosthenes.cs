@@ -18,7 +18,7 @@ namespace NumberTheory
                 var n = Prompt.Input<uint>("So what is this number?");
 
                 Console.WriteLine("Answer is ");
-                GetSieve(n);
+                ShowSieve(n);
                  
             }
             catch (Exception ex)
@@ -28,17 +28,18 @@ namespace NumberTheory
             }
         }
 
-        public static void GetSieve(uint n)
+        public static void ShowSieve(uint n)
         {
             _ = n <= 0 ? throw new ArgumentOutOfRangeException(nameof(n)) : n;
 
-            var primeNumbers = GetPrimeNumbers();
+            var primeNumbers = GetPrimeNumbers(n);
             new ConsoleTable()
                 .AddColumn(primeNumbers.Select(n => n.ToString()))
                 .Write(Format.Minimal);
+        }
 
-            IEnumerable<int> GetPrimeNumbers()
-            {
+        public static IEnumerable<uint> GetPrimeNumbers(uint n)
+        {
                 bool[] map = new bool[n + 1];
 
                 for (int i = 2; i * i <= n; i++)
@@ -56,10 +57,9 @@ namespace NumberTheory
                 {
                     if (!map[i])
                     {
-                        yield return i;
+                        yield return (uint)i;
                     }
                 }
-            }
         }
     }
 }

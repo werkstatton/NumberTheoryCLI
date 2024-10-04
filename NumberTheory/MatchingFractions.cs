@@ -19,7 +19,6 @@ namespace NumberTheory
                 var b = Prompt.Input<uint>("Second - denominator: ");
                 Console.WriteLine("Answer is ");
                 GetMatchingFractions(a, b);
-
             }
             catch (Exception ex)
             {

@@ -20,6 +20,8 @@ public class NumberTheory
             { nameof(EuclideanAlgorithm), typeof(EuclideanAlgorithm) },
             { nameof(SieveOfEratosthenes) , typeof(SieveOfEratosthenes) },
             { nameof(MatchingFractions), typeof(MatchingFractions) },
+            { nameof(PrimeFactorization), typeof(PrimeFactorization) },
+            { nameof(GeneralFunctions), typeof(GeneralFunctions) }
         };
     }
 }
