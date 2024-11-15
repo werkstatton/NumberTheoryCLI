@@ -1,4 +1,5 @@
-﻿using ConsoleTables;
+﻿using System.Numerics;
+using ConsoleTables;
 using Sharprompt;
 
 namespace NumberTheory
@@ -51,7 +52,7 @@ namespace NumberTheory
             }
         }
 
-        public static uint Basic(uint a, uint b)
+        public static T Basic<T>(T a, T b) where T : IBinaryInteger<T>
         {
             while (a != b)
             {
@@ -68,10 +69,10 @@ namespace NumberTheory
             return a;
         }
 
-        public static uint Extended(uint a, uint b)
+        public static T Extended<T>(T a, T b) where T : IBinaryInteger<T>
         {
             var table = new ConsoleTable(nameof(a),nameof(b));
-            while(a % b != 0)
+            while(a % b != T.Zero)
             {
                 table.AddRow(a, b);
                 var t = b;
@@ -82,11 +83,11 @@ namespace NumberTheory
             return b;
         }
 
-        public static uint Recursive(uint a, uint b)
+        public static T Recursive<T>(T a, T b) where T : IBinaryInteger<T>
         {
             while (true)
             {
-                if (b == 0)
+                if (b == T.Zero)
                 {
                     return a;
                 }
@@ -99,7 +100,7 @@ namespace NumberTheory
             }
         }
 
-        private static uint Denominator(uint a, uint b)
+        private static T Denominator<T>(T a, T b) where T : IBinaryInteger<T>
         {
             return (a /  Basic(a, b)) * b;
         }

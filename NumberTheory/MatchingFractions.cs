@@ -1,4 +1,5 @@
-﻿using ConsoleTables;
+﻿using System.Numerics;
+using ConsoleTables;
 using Sharprompt;
 
 namespace NumberTheory
@@ -41,10 +42,10 @@ namespace NumberTheory
             table.Write(Format.Alternative);
         }
 
-        public static List<uint> GetMatchingFractionsCoefficients(uint a, uint b)
+        public static List<T> GetMatchingFractionsCoefficients<T>(T a, T b) where T : IBinaryInteger<T>
         {
-            var coefficients = new List<uint>();
-            while (b != 0)
+            var coefficients = new List<T>();
+            while (b != T.Zero)
             {
                 coefficients.Add(a / b);
                 var temp = a;

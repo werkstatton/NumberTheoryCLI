@@ -83,17 +83,17 @@ namespace NumberTheory
             throw new ArgumentException("Euler function is not integer!");
         }
 
-        public static int GetWholePart(decimal a)
+        private static int GetWholePart(decimal a)
         {
             return (int)Math.Floor(a);
         }
 
-        public static int GetFractionPart(decimal a)
+        private static int GetFractionPart(decimal a)
         {
             return (int)(a - Math.Floor(a));
         }
 
-        public static int GetTau(uint a)
+        private static int GetTau(uint a)
         {
             var factors = GetPrimeFactorizationFactors(a);
             return factors.Aggregate(1, (current, factor) => current * ((int)factor + 1));

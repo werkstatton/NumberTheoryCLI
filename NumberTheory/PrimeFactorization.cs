@@ -44,7 +44,7 @@ namespace NumberTheory
             return result;
         }
 
-        public static void ShowPrimeFactorization(IEnumerable<uint> factorizationNumbers, IEnumerable<uint> factors)
+        private static void ShowPrimeFactorization(IEnumerable<uint> factorizationNumbers, IEnumerable<uint> factors)
         {
             var resultString = new StringBuilder();
 
