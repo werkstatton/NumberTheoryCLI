@@ -24,7 +24,6 @@ namespace NumberTheory
             catch (Exception ex)
             {
                 Console.WriteLine("Oh! There is some mistake! \n Error message is: " + ex.Message);
-                return;
             }
         }
 
@@ -40,20 +39,18 @@ namespace NumberTheory
 
         public static IEnumerable<uint> GetPrimeNumbers(uint n)
         {
-                bool[] map = new bool[n + 1];
+                var map = new bool[n + 1];
 
-                for (int i = 2; i * i <= n; i++)
+                for (var i = 2; i * i <= n; i++)
                 {
-                    if (!map[i])
+                    if (map[i]) continue;
+                    for (var j = i * i; j <= n; j += i)
                     {
-                        for (int j = i * i; j <= n; j += i)
-                        {
-                            map[j] = true;
-                        }
+                        map[j] = true;
                     }
                 }
 
-                for (int i = 2; i <= n; i++)
+                for (var i = 2; i <= n; i++)
                 {
                     if (!map[i])
                     {

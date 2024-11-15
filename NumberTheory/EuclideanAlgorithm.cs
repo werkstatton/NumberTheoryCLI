@@ -7,27 +7,29 @@ namespace NumberTheory
     {
         public EuclideanAlgorithm()
         {
-            Console.WriteLine("Welcome to Euclidean Algorith Section! \n You can choose method to find GCD or you need to find LCD:");
-            uint a, b;
+            Console.WriteLine("Welcome to Euclidean Algorithm Section! \n You can choose method to find GCD or you need to find LCD:");
+            const string answerIsString = "Answer is: ";
             try
             {
-                var prefferedMethod = Prompt.Select("Select: ", new[] {"GCD", "LCD"});
-                
-                switch (prefferedMethod)
+                var preferredMethod = Prompt.Select("Select: ", ["GCD", "LCD"]);
+
+                uint b;
+                uint a;
+                switch (preferredMethod)
                 {
                     case "GCD": {
-                            var methodGCD = Prompt.Select("We need to know preferred method: ", new[] {
+                            var methodGcd = Prompt.Select("We need to know preferred method: ", new[] {
                                 nameof(Basic), nameof(Extended), nameof(Recursive)
                             });
                             a = Prompt.Input<uint>("First number: ");
                             b = Prompt.Input<uint>("Second number: ");
                             if (a == 0 || b == 0)
                                 throw new ArgumentException("Variables need to be more than 0");
-                            switch(methodGCD)
+                            switch(methodGcd)
                             {
-                                case "Basic": Console.WriteLine("Answer is: " + Basic(a, b)); break;
-                                case "Extended": Console.WriteLine("Answer is: " + Extended(a, b)); break;
-                                case "Recursive": Console.WriteLine("Answer is: " + Recursive(a, b)); break;
+                                case "Basic": Console.WriteLine(answerIsString + Basic(a, b)); break;
+                                case "Extended": Console.WriteLine(answerIsString + Extended(a, b)); break;
+                                case "Recursive": Console.WriteLine(answerIsString + Recursive(a, b)); break;
                             }
                             break;
                         }
@@ -38,7 +40,7 @@ namespace NumberTheory
                             if (a == 0 || b == 0)
                                 throw new ArgumentException("Variables need to be more than 0");
 
-                            Console.WriteLine("Answer is: " + Denominator(a, b));
+                            Console.WriteLine(answerIsString + Denominator(a, b));
                             break;
                         }
                 }                
@@ -46,16 +48,13 @@ namespace NumberTheory
             catch (Exception ex)
             {
                 Console.WriteLine("Oh! There is some mistake! \n Error message is: " + ex.Message);
-                return;
             }
         }
 
         public static uint Basic(uint a, uint b)
         {
-            var table = new ConsoleTable(nameof(a), nameof(b));
             while (a != b)
             {
-                table.AddRow(a, b);
                 if (a > b)
                 {
                     a -= b;
@@ -65,8 +64,7 @@ namespace NumberTheory
                     (b, a) = (a, b);
                 }
             }
-
-            table.Write(Format.Minimal);
+            
             return a;
         }
 
@@ -80,26 +78,28 @@ namespace NumberTheory
                 b = a % b;
                 a = t;
             }
-
-            table
-                .AddRow(a, b)
-                .Write(Format.Minimal);
+            
             return b;
         }
 
         public static uint Recursive(uint a, uint b)
         {
-            if (b == 0)
+            while (true)
             {
-                return a;
-            }
-            else
-            {
-                return Recursive(b, a % b);
+                if (b == 0)
+                {
+                    return a;
+                }
+                else
+                {
+                    var a1 = a;
+                    a = b;
+                    b = a1 % b;
+                }
             }
         }
 
-        public static uint Denominator(uint a, uint b)
+        private static uint Denominator(uint a, uint b)
         {
             return (a /  Basic(a, b)) * b;
         }

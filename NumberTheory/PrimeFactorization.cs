@@ -1,11 +1,6 @@
-﻿using ConsoleTables;
-using Sharprompt;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Sharprompt;
 using System.Text;
-using System.Threading.Tasks;
+using static NumberTheory.SieveOfEratosthenes;
 
 namespace NumberTheory
 {
@@ -18,39 +13,58 @@ namespace NumberTheory
             {
                 var a = Prompt.Input<uint>("Number: ");
                 Console.WriteLine("Answer is ");
-                GetPrimeFactorization(a);
+                var factorizationNumbers =  GetPrimeFactorizationNumbers(a);
+                var factors = GetPrimeFactorizationFactors(a);
+
+                ShowPrimeFactorization(factorizationNumbers, factors);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Oh! There is some mistake! \n Error message is: " + ex.Message);
-                return;
             }
         }
 
-        public static void GetPrimeFactorization(uint number)
+        public static ICollection<uint> GetPrimeFactorizationNumbers(uint number)
         {
-            var primeNumbers = SieveOfEratosthenes.GetPrimeNumbers(number);
-            var factors = GetFactors(number, primeNumbers);
+            var primeNumbers = GetPrimeNumbers(number);
+            var factors = GetPrimeFactorizationFactors(number);
 
-            var resultString = new StringBuilder();
+            var result = new List<uint>();
 
-            resultString.Append("Prime factorization of " + number + " is: \n");
             var iterator = 0;
             foreach (var factor in factors)
             {
                 if (factor != 0)
                 {
-                    resultString.Append(primeNumbers.ElementAt(iterator)+ "^" + factor + " * ");
+                    result.Add(primeNumbers.ElementAt(iterator));
                 }
                 iterator++;
             }
 
-            Console.WriteLine(resultString.ToString().Substring(0, resultString.Length - 3));
+            return result;
         }
 
-        public static IEnumerable<uint> GetFactors(uint a, IEnumerable<uint> primeNumbers)
+        public static void ShowPrimeFactorization(IEnumerable<uint> factorizationNumbers, IEnumerable<uint> factors)
+        {
+            var resultString = new StringBuilder();
+
+            var iterator = 0;
+            foreach (var factor in factors)
+            {
+                if (factor == 0) continue;
+                resultString.Append(factorizationNumbers.ElementAt(iterator) + "^" + factor + " * ");
+                iterator++;
+
+            }
+
+            Console.WriteLine(resultString.ToString()[..(resultString.Length - 3)]);
+        }
+
+        public static IEnumerable<uint> GetPrimeFactorizationFactors(uint a)
         {
             var initialNumber = a;
+            var primeNumbers = GetPrimeNumbers(a);
+
             uint countFactors = 0;
             foreach (var number in primeNumbers)
             {

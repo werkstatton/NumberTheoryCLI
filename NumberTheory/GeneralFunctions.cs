@@ -1,9 +1,5 @@
 ﻿using Sharprompt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static NumberTheory.PrimeFactorization;
 
 namespace NumberTheory
 {
@@ -15,27 +11,41 @@ namespace NumberTheory
             Console.WriteLine("Welcome to General Functions Section! \n You need to write a number to start algorithm! \n");
             try
             {
-                var prefferedFunction = Prompt.Select("Select: ", new[] { "Whole Part", "Fraction part", "Tau" });
-
-                switch (prefferedFunction)
+                var preferredFunction = Prompt.Select("Select: ",
+                    ["Whole Part Function", "Fraction part Function", "Tau Function", "Euler Function", "Möbius Function"
+                    ]);
+                const string numberString = "Number: ";
+                const string answerIsString = "Answer is: ";
+                switch (preferredFunction)
                 {
-                    case "Whole Part":
+                    case "Whole Part Function":
                         {
-                            var a = Prompt.Input<decimal>("Number: ");
-                            GetWholePart(a);   
+                            var a = Prompt.Input<decimal>(numberString);
+                            Console.WriteLine(answerIsString + GetWholePart(a));
                             break;
                         }
-                    case "Fraction part":
+                    case "Fraction part Function":
                         {
-                            var a = Prompt.Input<decimal>("Number: ");
-                            GetFractionPart(a);
+                            var a = Prompt.Input<decimal>(numberString);
+                            Console.WriteLine(answerIsString + GetFractionPart(a));
                             break;
                         }
-                    case "Tau":
+                    case "Tau Function":
                         {
-                            var a = Prompt.Input<uint>("Number: ");
-                            Console.WriteLine("Answer is ");
-                            GetTau(a);
+                            var a = Prompt.Input<uint>(numberString);
+                            Console.WriteLine(answerIsString + GetTau(a));
+                            break;
+                        }
+                    case "Euler Function":
+                        {
+                            var a = Prompt.Input<uint>(numberString);
+                            Console.WriteLine(answerIsString + GetEuler(a));
+                            break;
+                        }
+                    case "Möbius Function":
+                        {
+                            var a = Prompt.Input<uint>(numberString);
+                            Console.WriteLine(answerIsString + GetMöbius(a));
                             break;
                         }
                 }
@@ -43,32 +53,50 @@ namespace NumberTheory
             catch (Exception ex)
             {
                 Console.WriteLine("Oh! There is some mistake! \n Error message is: " + ex.Message);
-                return;
             }
         }
 
-        public static void GetWholePart(decimal a)
+        private static int GetMöbius(uint a)
         {
-            Console.WriteLine("Whole part of " + a + " is: " + Math.Floor(a));
-        }
-
-        public static void GetFractionPart(decimal a)
-        {
-            Console.WriteLine("Fraction part of " + a + " is: " + (a - Math.Floor(a)));
-        }
-
-        public static void GetTau(uint a)
-        {
-            var primeNumbers = SieveOfEratosthenes.GetPrimeNumbers(a);
-            var factors = PrimeFactorization.GetFactors(a, primeNumbers);
-
-            var result = 1;
-            foreach(var factor in factors)
+            var primeFactorizationNumbers = GetPrimeFactorizationNumbers(a);
+            var factors = GetPrimeFactorizationFactors(a);
+            if (factors.Contains((uint)2))
             {
-                result *= ((int)factor + 1);
+                
+                return 0;
             }
 
-            Console.WriteLine("Result is: " + result);
+            return primeFactorizationNumbers.Count % 2 == 0 ? 1 : -1;
+        }
+
+        private static int GetEuler(uint a)
+        {
+            var primeFactorizationNumbers = GetPrimeFactorizationNumbers(a);
+            var result = (decimal)a;
+            result = primeFactorizationNumbers.Aggregate(result, (current, prime) => current * (1 - (1 / (decimal)prime)));
+
+            if(GetFractionPart(result) == 0)
+            {
+                return (int)result;
+            }
+
+            throw new ArgumentException("Euler function is not integer!");
+        }
+
+        public static int GetWholePart(decimal a)
+        {
+            return (int)Math.Floor(a);
+        }
+
+        public static int GetFractionPart(decimal a)
+        {
+            return (int)(a - Math.Floor(a));
+        }
+
+        public static int GetTau(uint a)
+        {
+            var factors = GetPrimeFactorizationFactors(a);
+            return factors.Aggregate(1, (current, factor) => current * ((int)factor + 1));
         }
     }
 }
